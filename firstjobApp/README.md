@@ -154,3 +154,84 @@ public class JobController {
           }
           ```
 
+### setting up the job service 
+
+create a JobService and job.impl package having a job.impl file 
+
+=-> JobService
+```java
+package com.mukesh.firstjobApp.job;
+
+import java.util.List;
+
+public interface JobService {
+    List<Job> findAll();
+    void createJob(Job job);
+}
+
+```
+=> jobServiceImpl
+```java
+package com.mukesh.firstjobApp.job.impl;
+
+import com.mukesh.firstjobApp.job.Job;
+import com.mukesh.firstjobApp.job.JobService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class JobServiceImpl implements JobService {
+
+    private  List<Job> jobs = new ArrayList<>();
+
+
+    @Override
+    public List<Job> findAll() {
+        return jobs;
+    }
+
+    @Override
+    public void createJob(Job job) {
+      jobs.add(job);
+    }
+}
+
+```
+
+now refactor jobController
+```java
+package com.mukesh.firstjobApp.job;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+public class JobController {
+
+    private  JobService jobService;
+
+    public JobController(JobService jobService) {
+        this.jobService = jobService;
+    }
+
+    @GetMapping("/jobs")
+    public List<Job> findAll(){
+        return jobService.findAll();
+    }
+
+    @PostMapping("/jobs")
+    public String createJob(@RequestBody Job job ){
+        jobService.createJob(job);
+        return  "Job added successfully";
+    }
+}
+
+
+```
