@@ -49,13 +49,15 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean updateJob(Long id, Job upatedJob) {
-        Iterator<Job> iterator = jobs.iterator();
-        while (iterator.hasNext()) {
-            Job job = iterator.next();
-            if (job.getId().equals(id)) {
-                iterator.remove();
-                return true;
+    public boolean updateJob(Long id, Job updatedJob) {
+        for (Job job:jobs){
+            if (job.getId().equals(id)){
+                job.setTitle(updatedJob.getTitle());
+                job.setDescription(updatedJob.getDescription());
+                job.setMaxSalary(updatedJob.getMaxSalary());
+                job.setMinSalary(updatedJob.getMinSalary());
+                job.setLocation(updatedJob.getLocation());
+                return  true;
             }
         }
         return false;
