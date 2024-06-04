@@ -5,22 +5,17 @@ import com.mukesh.firstjobApp.job.JobRepository;
 import com.mukesh.firstjobApp.job.JobService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class JobServiceImpl implements JobService {
 
-//    private  List<Job> jobs = new ArrayList<>();
     JobRepository jobRepository;
 
     public JobServiceImpl(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
     }
-
-    private Long nextId = 1L;
 
     @Override
     public List<Job> findAll() {
@@ -29,7 +24,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void createJob(Job job) {
-        job.setId(nextId++);
         jobRepository.save(job);
     }
 
@@ -57,6 +51,7 @@ public class JobServiceImpl implements JobService {
            job.setDescription(updatedJob.getDescription());
            job.setMinSalary(updatedJob.getMinSalary());
            job.setLocation(updatedJob.getLocation());
+           jobRepository.save(job);
            return true;
         }
          return false;
