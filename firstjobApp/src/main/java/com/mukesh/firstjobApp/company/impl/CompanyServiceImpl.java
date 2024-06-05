@@ -42,12 +42,15 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public boolean deleteJobById(Long id){
-        try {
-           companyRepository.deleteById(id);
-           return true;
-        } catch (Exception e){
-            return false;
+        if(companyRepository.existsById(id)){
+            companyRepository.deleteById(id);
         }
+        return false;
+    }
+
+    @Override
+    public Company getCompanyById(Long id){
+      return  companyRepository.findById(id).orElse(null);
     }
 
 }
