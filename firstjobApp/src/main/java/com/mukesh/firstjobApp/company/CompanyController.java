@@ -31,4 +31,5 @@ public class CompanyController {
         companyService.createCompany(company);
         return new ResponseEntity<>("Company added successfully", HttpStatus.CREATED);
     }
+
 }
