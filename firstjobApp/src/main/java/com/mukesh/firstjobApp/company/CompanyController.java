@@ -32,4 +32,10 @@ public class CompanyController {
         return new ResponseEntity<>("Company added successfully", HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<String> deleteCompany(@PathVariable Long id){
+        companyService.deleteJobById(id);
+        return new ResponseEntity<>("Company deleted successfully", HttpStatus.OK);
+    }
+
 }
