@@ -8,6 +8,7 @@ import com.mukesh.firstjobApp.review.ReviewService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -49,6 +50,23 @@ public class ReviewServiceImpl implements ReviewService {
           updatedReview.setId(reviewId);
           reviewRepository.save(updatedReview);
           return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteReview(Long companyId, Long reviewId) {
+        Optional<Company> company = Optional.ofNullable(companyService.getCompanyById(companyId));
+        Optional<Review> review = reviewRepository.findById(reviewId);
+
+        if (company.isPresent() && review.isPresent()) {
+            Review existedReview = review.get();
+            Company existedCompany = existedReview.getCompany();
+
+            existedCompany.getReviews().remove(existedReview);
+            companyService.updateCompany(existedCompany, companyId);
+            reviewRepository.deleteById(reviewId);
+            return true;
         }
         return false;
     }
