@@ -1,5 +1,7 @@
 package com.mukesh.firstjobApp.review.impl;
 
+import com.mukesh.firstjobApp.company.Company;
+import com.mukesh.firstjobApp.company.CompanyService;
 import com.mukesh.firstjobApp.review.Review;
 import com.mukesh.firstjobApp.review.ReviewRepository;
 import com.mukesh.firstjobApp.review.ReviewService;
@@ -10,15 +12,27 @@ import java.util.List;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
+    private final CompanyService companyService;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, CompanyService companyService) {
         this.reviewRepository = reviewRepository;
+        this.companyService = companyService;
     }
 
     @Override
     public List<Review> getAllReviews(Long companyId) {
-        List<Review> reviews = reviewRepository.findByCompanyId(companyId);
-        return reviews;
+        return reviewRepository.findByCompanyId(companyId);
+    }
+
+    @Override
+    public boolean createReview(Long companyID, Review review) {
+        Company company = companyService.getCompanyById(companyID);
+        if(company != null){
+            review.setCompany(company);
+            reviewRepository.save(review);
+            return  true;
+        }
+        return false;
     }
 }
