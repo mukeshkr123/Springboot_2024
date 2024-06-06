@@ -26,6 +26,11 @@ public class ReviewController {
        boolean isReviewSaved = reviewService.createReview(companyId, review);
        if(isReviewSaved)
             return new ResponseEntity<>("Review Created successfully", HttpStatus.OK);
-       return new RespogutnseEntity<>("Review not saved", HttpStatus.NOT_FOUND);
+       return new ResponseEntity<>("Review not saved", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/reviews/{reviewId}")
+    public ResponseEntity<Review> getReview(@PathVariable Long companyId, @PathVariable Long reviewId){
+        return new  ResponseEntity<>(reviewService.getReview(companyId, reviewId), HttpStatus.OK);
     }
 }
